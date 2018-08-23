@@ -1,7 +1,7 @@
 # Roles And Permissions For Laravel,Supports Laravel 5.3, 5.4, 5.5, and 5.6.
 
-[![Total Downloads](https://poser.pugx.org/jeremykenedy/laravel-roles/d/total.svg)](https://packagist.org/packages/jeremykenedy/laravel-roles)
-[![Latest Stable Version](https://poser.pugx.org/jeremykenedy/laravel-roles/v/stable.svg)](https://packagist.org/packages/jeremykenedy/laravel-roles)
+[![Total Downloads](https://poser.pugx.org/axioTake/laravel-roles/d/total.svg)](https://packagist.org/packages/axioTake/laravel-roles)
+[![Latest Stable Version](https://poser.pugx.org/axioTake/laravel-roles/v/stable.svg)](https://packagist.org/packages/axioTake/laravel-roles)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 A Powerful package for handling roles and permissions in Laravel.
@@ -41,7 +41,7 @@ This package is very easy to set up. There are only couple of steps.
 
 Pull this package in through Composer
 ```
-composer require jeremykenedy/laravel-roles
+composer require axioTake/laravel-roles
 ```
 
 ### Service Provider
@@ -59,7 +59,7 @@ Add the package to your application service providers in `config/app.php` file.
     /**
      * Third Party Service Providers...
      */
-    jeremykenedy\LaravelRoles\RolesServiceProvider::class,
+    axioTake\LaravelRoles\RolesServiceProvider::class,
 
 ],
 ```
@@ -68,13 +68,13 @@ Add the package to your application service providers in `config/app.php` file.
 
 Publish the package config file and migrations to your application. Run these commands inside your terminal.
 
-    php artisan vendor:publish --tag=laravelroles
+    php artisan vendor:publish --tag=laravel5roles
 
 ### HasRoleAndPermission Trait And Contract
 
 1. Include `HasRoleAndPermission` trait and also implement `HasRoleAndPermission` contract inside your `User` model. See example below.
 
-2. Include `use jeremykenedy\LaravelRoles\Traits\HasRoleAndPermission;` in the top of your `User` model below the namespace and implement the `HasRoleAndPermission` trait. See example below.
+2. Include `use axioTake\LaravelRoles\Traits\HasRoleAndPermission;` in the top of your `User` model below the namespace and implement the `HasRoleAndPermission` trait. See example below.
 
 Example `User` model Trait And Contract:
 
@@ -86,8 +86,8 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;
-use jeremykenedy\LaravelRoles\Traits\HasRoleAndPermission;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use axioTake\LaravelRoles\Traits\HasRoleAndPermission;
 
 class User extends Authenticatable
 {
@@ -126,10 +126,10 @@ class DatabaseSeeder extends Seeder
     {
         Model::unguard();
 
-            $this->call('PermissionsTableSeeder');
-            $this->call('RolesTableSeeder');
-            $this->call('ConnectRelationshipsSeeder');
-            //$this->call('UsersTableSeeder');
+        //$this->call('UsersTableSeeder');
+        $this->call('PermissionsTableSeeder');
+        $this->call('RolesTableSeeder');
+        $this->call('ConnectRelationshipsSeeder');
 
         Model::reguard();
     }
@@ -147,51 +147,44 @@ php artisan db:seed
 #### Roles Seeded
 |Property|Value|
 |----|----|
-|Name| Admin|
-|Slug| admin|
+|Name| admin|
 |Description| Admin Role|
 |Level| 5|
 
 |Property|Value|
 |----|----|
-|Name| User|
-|Slug| user|
+|Name| user|
 |Description| User Role|
 |Level| 1|
 
 |Property|Value|
 |----|----|
-|Name| Unverified|
-|Slug| unverified|
+|Name| unverified|
 |Description| Unverified Role|
 |Level| 0|
 
 #### Permissions Seeded:
 |Property|Value|
 |----|----|
-|name|Can View Users|
-|slug|view.users|
+|name|users.view|
 |description|Can view users|
 |model|Permission|
 
 |Property|Value|
 |----|----|
-|name|Can Create Users|
-|slug|create.users|
+|name|users.create|
 |description|Can create new users|
 |model|Permission|
 
 |Property|Value|
 |----|----|
-|name|Can Edit Users|
-|slug|edit.users|
+|name|users.edit|
 |description|Can edit users|
 |model|Permission|
 
 |Property|Value|
 |----|----|
-|name|Can Delete Users|
-|slug|delete.users|
+|name|users.delete|
 |description|Can delete users|
 |model|Permission|
 
@@ -200,34 +193,25 @@ php artisan db:seed
 
 ---
 
-## Migrate from bican roles
-If you migrate from bican/roles to jeremykenedy/LaravelRoles you will need to update a few things.
-- Change all calls to `can`, `canOne` and `canAll` to `hasPermission`, `hasOnePermission`, `hasAllPermissions`.
-- Change all calls to `is`, `isOne` and `isAll` to `hasRole`, `hasOneRole`, `hasAllRoles`.
-
----
-
 ## Usage
 
 ### Creating Roles
 
 ```php
-use jeremykenedy\LaravelRoles\Models\Role;
+use axioTake\LaravelRoles\Models\Role;
 
 $adminRole = Role::create([
-    'name' => 'Admin',
-    'slug' => 'admin',
+    'name' => 'admin',
     'description' => '',
     'level' => 5,
 ]);
 
 $moderatorRole = Role::create([
-    'name' => 'Forum Moderator',
-    'slug' => 'forum.moderator',
+    'name' => 'forum.moderator',
 ]);
 ```
 
-> Because of `Slugable` trait, if you make a mistake and for example leave a space in slug parameter, it'll be replaced with a dot automatically, because of `str_slug` function.
+> Because of `Slugable` trait, if you make a mistake and for example leave a space in name parameter, it'll be replaced with a dot automatically, because of `str_slug` function.
 
 ### Attaching, Detaching and Syncing Roles
 
@@ -259,9 +243,9 @@ namespace App\Http\Controllers\Auth;
 use App\User;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
-use jeremykenedy\LaravelRoles\Models\Role;
-use jeremykenedy\LaravelRoles\Models\Permission;
 use Illuminate\Foundation\Auth\RegistersUsers;
+use axioTake\LaravelRoles\Models\Role;
+use axioTake\LaravelRoles\Models\Permission;
 
 ```
 
@@ -276,7 +260,7 @@ use Illuminate\Foundation\Auth\RegistersUsers;
             'password' => bcrypt($data['password']),
         ]);
 
-        $role = Role::where('name', '=', 'User')->first();  //choose the default role upon user creation.
+        $role = Role::where('name', '=', 'user')->first();  //choose the default role upon user creation.
         $user->attachRole($role);
 
         return $user;
@@ -345,17 +329,15 @@ if ($user->level() > 4) {
 It's very simple thanks to `Permission` model.
 
 ```php
-use jeremykenedy\LaravelRoles\Models\Permission;
+use axioTake\LaravelRoles\Models\Permission;
 
 $createUsersPermission = Permission::create([
-    'name' => 'Create users',
-    'slug' => 'create.users',
-    'description' => '', // optional
+    'name' => 'users.create',
+    'description' => 'Create user records', // optional
 ]);
 
 $deleteUsersPermission = Permission::create([
-    'name' => 'Delete users',
-    'slug' => 'delete.users',
+    'name' => 'users.delete',
 ]);
 ```
 
@@ -365,7 +347,7 @@ You can attach permissions to a role or directly to a specific user (and of cour
 
 ```php
 use App\User;
-use jeremykenedy\LaravelRoles\Models\Role;
+use axioTake\LaravelRoles\Models\Role;
 
 $role = Role::find($roleId);
 $role->attachPermission($createUsersPermission); // permission attached to a role
@@ -387,7 +369,7 @@ $user->syncPermissions($permissions); // you can pass Eloquent collection, or ju
 ### Checking For Permissions
 
 ```php
-if ($user->hasPermission('create.users') { // you can pass an id or slug
+if ($user->hasPermission('users.create') { // you can pass an id or slug
     //
 }
 
@@ -414,11 +396,10 @@ Let's say you have an article and you want to edit it. This article belongs to a
 
 ```php
 use App\Article;
-use jeremykenedy\LaravelRoles\Models\Permission;
+use axioTake\LaravelRoles\Models\Permission;
 
 $editArticlesPermission = Permission::create([
-    'name' => 'Edit articles',
-    'slug' => 'edit.articles',
+    'name' => 'articles.edit',
     'model' => 'App\Article',
 ]);
 
@@ -426,7 +407,7 @@ $user->attachPermission($editArticlesPermission);
 
 $article = Article::find(1);
 
-if ($user->allowed('edit.articles', $article)) { // $user->allowedEditArticles($article)
+if ($user->allowed('articles.edit', $article)) { // $user->allowedEditArticles($article)
     //
 }
 ```
@@ -434,7 +415,7 @@ if ($user->allowed('edit.articles', $article)) { // $user->allowedEditArticles($
 This condition checks if the current user is the owner of article. If not, it will be looking inside user permissions for a row we created before.
 
 ```php
-if ($user->allowed('edit.articles', $article, false)) { // now owner check is disabled
+if ($user->allowed('articles.edit', $article, false)) { // now owner check is disabled
     //
 }
 ```
@@ -481,9 +462,9 @@ protected $routeMiddleware = [
     'auth' => \App\Http\Middleware\Authenticate::class,
     'auth.basic' => \Illuminate\Auth\Middleware\AuthenticateWithBasicAuth::class,
     'guest' => \App\Http\Middleware\RedirectIfAuthenticated::class,
-    'role' => \jeremykenedy\LaravelRoles\Middleware\VerifyRole::class,
-    'permission' => \jeremykenedy\LaravelRoles\Middleware\VerifyPermission::class,
-    'level' => \jeremykenedy\LaravelRoles\Middleware\VerifyLevel::class,
+    'role' => \axioTake\LaravelRoles\Middleware\VerifyRole::class,
+    'permission' => \axioTake\LaravelRoles\Middleware\VerifyPermission::class,
+    'level' => \axioTake\LaravelRoles\Middleware\VerifyLevel::class,
 ];
 ```
 
@@ -496,7 +477,7 @@ Route::get('/', function () {
 
 Route::get('/', function () {
     //
-})->middleware('permission:edit.articles');
+})->middleware('permission:articles.edit');
 
 Route::get('/', function () {
     //
@@ -512,7 +493,7 @@ Route::group(['middleware' => ['role:admin']], function () {
 
 ```
 
-It throws `\jeremykenedy\LaravelRoles\Exceptions\RoleDeniedException`, `\jeremykenedy\LaravelRoles\Exceptions\PermissionDeniedException` or `\jeremykenedy\LaravelRoles\Exceptions\LevelDeniedException` exceptions if it goes wrong.
+It throws `\axioTake\LaravelRoles\Exceptions\RoleDeniedException`, `\axioTake\LaravelRoles\Exceptions\PermissionDeniedException` or `\axioTake\LaravelRoles\Exceptions\LevelDeniedException` exceptions if it goes wrong.
 
 You can catch these exceptions inside `app/Exceptions/Handler.php` file and do whatever you want.
 
@@ -527,10 +508,10 @@ You can catch these exceptions inside `app/Exceptions/Handler.php` file and do w
     public function render($request, Exception $exception)
     {
 
-        $userLevelCheck = $exception instanceof \jeremykenedy\LaravelRoles\Exceptions\RoleDeniedException ||
-            $exception instanceof \jeremykenedy\LaravelRoles\Exceptions\RoleDeniedException ||
-            $exception instanceof \jeremykenedy\LaravelRoles\Exceptions\PermissionDeniedException ||
-            $exception instanceof \jeremykenedy\LaravelRoles\Exceptions\LevelDeniedException;
+        $userLevelCheck = $exception instanceof \axioTake\LaravelRoles\Exceptions\RoleDeniedException ||
+            $exception instanceof \axioTake\LaravelRoles\Exceptions\RoleDeniedException ||
+            $exception instanceof \axioTake\LaravelRoles\Exceptions\PermissionDeniedException ||
+            $exception instanceof \axioTake\LaravelRoles\Exceptions\LevelDeniedException;
 
         if ($userLevelCheck) {
 
@@ -554,14 +535,13 @@ You can catch these exceptions inside `app/Exceptions/Handler.php` file and do w
 You can change connection for models, slug separator, models path and there is also a handy pretend feature. Have a look at config file for more information.
 
 ## More Information
-For more information, please have a look at [HasRoleAndPermission](https://github.com/jeremykenedy/laravel-roles/blob/master/src/Contracts/HasRoleAndPermission.php) contract.
+For more information, please have a look at [HasRoleAndPermission](https://github.com/axioTake/laravel-roles/blob/master/src/Contracts/HasRoleAndPermission.php) contract.
 
 ## Credit Note
-This package is an adaptation of [romanbican/roles](https://github.com/romanbican/roles) and [ultraware/roles](https://github.com/ultraware/roles/).
+This package is a fork of [jeremykenedy/laravel-roles](https://github.com/jeremykenedy/laravel-roles).
 
 ## Opening an Issue
 Before opening an issue there are a couple of considerations:
-* If you did not **star this repo** *I will close your issue immediatly without consideration.* **My time is valuable**.
 * **Read the instructions** and make sure all steps were *followed correctly*.
 * **Check** that the issue is not *specific to your development environment* setup.
 * **Provide** *duplication steps*.
@@ -569,8 +549,6 @@ Before opening an issue there are a couple of considerations:
 * **Show that you have made an attempt** to *look into the issue*.
 * **Check** to see if the issue you are *reporting is a duplicate* of a previous reported issue.
 * **Following these instructions show me that you have tried.**
-* If you have a questions send me an email to jeremykenedy@gmail.com
-* Please be considerate that this is an open source project that I provide to the community for FREE when opening an issue. 
 
 ## License
 This package is free software distributed under the terms of the MIT license.

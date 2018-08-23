@@ -1,11 +1,11 @@
 <?php
 
-namespace jeremykenedy\LaravelRoles\Middleware;
+namespace axioTake\LaravelRoles\Middleware;
 
 use Closure;
 use Illuminate\Contracts\Auth\Guard;
 use Illuminate\Http\Request;
-use jeremykenedy\LaravelRoles\Exceptions\LevelDeniedException;
+use axioTake\LaravelRoles\Exceptions\LevelDeniedException;
 
 class VerifyLevel
 {
@@ -27,13 +27,11 @@ class VerifyLevel
     /**
      * Handle an incoming request.
      *
-     * @param Request  $request
+     * @param Request $request
      * @param \Closure $next
-     * @param int      $level
-     *
-     * @throws \jeremykenedy\LaravelRoles\Exceptions\LevelDeniedException
-     *
+     * @param int $level
      * @return mixed
+     * @throws \axioTake\LaravelRoles\Exceptions\LevelDeniedException
      */
     public function handle($request, Closure $next, $level)
     {

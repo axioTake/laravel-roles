@@ -1,8 +1,10 @@
 <?php
 
+use App\User;
+use axioTake\LaravelRoles\Models\Role;
+use axioTake\LaravelRoles\Models\Permission;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Seeder;
-use jeremykenedy\LaravelRoles\Models\Permission;
-use jeremykenedy\LaravelRoles\Models\Role;
 
 class ConnectRelationshipsSeeder extends Seeder
 {
@@ -14,17 +16,19 @@ class ConnectRelationshipsSeeder extends Seeder
     public function run()
     {
 
-        /**
-         * Get Available Permissions.
-         */
-        $permissions = Permission::all();
+	    /**
+	     * Get Available Permissions
+	     *
+	     */
+			$permissions = Permission::all();
 
-        /**
-         * Attach Permissions to Roles.
-         */
-        $roleAdmin = Role::where('name', '=', 'Admin')->first();
-        foreach ($permissions as $permission) {
-            $roleAdmin->attachPermission($permission);
-        }
+	    /**
+	     * Attach Permissions to Roles
+	     *
+	     */
+			$roleAdmin = Role::where('name', '=', 'admin')->first();
+			foreach ($permissions as $permission) {
+				$roleAdmin->attachPermission($permission);
+			}
     }
 }

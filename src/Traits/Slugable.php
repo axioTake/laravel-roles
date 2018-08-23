@@ -1,20 +1,19 @@
 <?php
 
-namespace jeremykenedy\LaravelRoles\Traits;
+namespace axioTake\LaravelRoles\Traits;
 
 use Illuminate\Support\Str;
 
 trait Slugable
 {
     /**
-     * Set slug attribute.
+     * Set name attribute.
      *
      * @param string $value
-     *
      * @return void
      */
-    public function setSlugAttribute($value)
+    public function setNameAttribute($value)
     {
-        $this->attributes['slug'] = Str::slug($value, config('roles.separator'));
+        $this->attributes['name'] = Str::slug($value, config('roles.separator'));
     }
 }

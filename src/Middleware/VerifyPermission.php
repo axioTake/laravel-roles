@@ -1,11 +1,11 @@
 <?php
 
-namespace jeremykenedy\LaravelRoles\Middleware;
+namespace axioTake\LaravelRoles\Middleware;
 
 use Closure;
 use Illuminate\Contracts\Auth\Guard;
 use Illuminate\Http\Request;
-use jeremykenedy\LaravelRoles\Exceptions\PermissionDeniedException;
+use axioTake\LaravelRoles\Exceptions\PermissionDeniedException;
 
 class VerifyPermission
 {
@@ -27,13 +27,11 @@ class VerifyPermission
     /**
      * Handle an incoming request.
      *
-     * @param Request    $request
-     * @param \Closure   $next
+     * @param Request $request
+     * @param \Closure $next
      * @param int|string $permission
-     *
-     * @throws \jeremykenedy\LaravelRoles\Exceptions\PermissionDeniedException
-     *
      * @return mixed
+     * @throws \axioTake\LaravelRoles\Exceptions\PermissionDeniedException
      */
     public function handle($request, Closure $next, $permission)
     {

@@ -1,10 +1,10 @@
 <?php
 
-namespace jeremykenedy\LaravelRoles\Contracts;
+namespace axioTake\LaravelRoles\Contracts;
 
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use jeremykenedy\LaravelRoles\Models\Permission;
+use axioTake\LaravelRoles\Models\Permission;
 
 interface RoleHasRelations
 {
@@ -26,7 +26,6 @@ interface RoleHasRelations
      * Attach permission to a role.
      *
      * @param int|Permission $permission
-     *
      * @return int|bool
      */
     public function attachPermission($permission);
@@ -35,7 +34,6 @@ interface RoleHasRelations
      * Detach permission from a role.
      *
      * @param int|Permission $permission
-     *
      * @return int
      */
     public function detachPermission($permission);
@@ -51,7 +49,6 @@ interface RoleHasRelations
      * Sync permissions for a role.
      *
      * @param array|Permission[]|Collection $permissions
-     *
      * @return array
      */
     public function syncPermissions($permissions);

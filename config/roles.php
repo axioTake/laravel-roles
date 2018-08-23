@@ -30,18 +30,44 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Permission naming
+    |--------------------------------------------------------------------------
+    |
+    | Define permission naming order, either <resource><separator><action> 
+    | (e.g. users.create) or vice versa <action><separator><resource>
+    | (e.g. create.users). 
+    | This is very important in matter of magic method __call(), so you can
+    | still use magic functions like, allowCreateUsers() 
+    |
+    */
+
+    'resourceFirstOrder' => true,
+
+    /*
+    |--------------------------------------------------------------------------
+    | Permission wildcard selector - not implemented, yet
+    |--------------------------------------------------------------------------
+    |
+    | Allow/disallow permission wildcard selector, e.g. users.*
+    |
+    */
+
+    'permissionWildcard' => true,
+
+    /*
+    |--------------------------------------------------------------------------
     | Models
     |--------------------------------------------------------------------------
     |
     | If you want, you can replace default models from this package by models
-    | you created. Have a look at `jeremykenedy\LaravelRoles\Models\Role` model and
-    | `jeremykenedy\LaravelRoles\Models\Permission` model.
+    | you created. Have a look at `axioTake\LaravelRoles\Models\Role` model and
+    | `axioTake\LaravelRoles\Models\Permission` model.
     |
     */
 
     'models' => [
-        'role'       => jeremykenedy\LaravelRoles\Models\Role::class,
-        'permission' => jeremykenedy\LaravelRoles\Models\Permission::class,
+        'role'       => axioTake\LaravelRoles\Models\Role::class,
+        'permission' => axioTake\LaravelRoles\Models\Permission::class,
     ],
 
     /*

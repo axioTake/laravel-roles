@@ -1,11 +1,11 @@
 <?php
 
-namespace jeremykenedy\LaravelRoles\Middleware;
+namespace axioTake\LaravelRoles\Middleware;
 
 use Closure;
 use Illuminate\Contracts\Auth\Guard;
 use Illuminate\Http\Request;
-use jeremykenedy\LaravelRoles\Exceptions\RoleDeniedException;
+use axioTake\LaravelRoles\Exceptions\RoleDeniedException;
 
 class VerifyRole
 {
@@ -27,13 +27,11 @@ class VerifyRole
     /**
      * Handle an incoming request.
      *
-     * @param Request    $request
-     * @param \Closure   $next
+     * @param Request $request
+     * @param \Closure $next
      * @param int|string $role
-     *
-     * @throws RoleDeniedException
-     *
      * @return mixed
+     * @throws RoleDeniedException
      */
     public function handle($request, Closure $next, $role)
     {

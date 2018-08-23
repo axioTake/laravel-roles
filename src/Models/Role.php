@@ -1,11 +1,11 @@
 <?php
 
-namespace jeremykenedy\LaravelRoles\Models;
+namespace axioTake\LaravelRoles\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use jeremykenedy\LaravelRoles\Contracts\RoleHasRelations as RoleHasRelationsContract;
-use jeremykenedy\LaravelRoles\Traits\RoleHasRelations;
-use jeremykenedy\LaravelRoles\Traits\Slugable;
+use axioTake\LaravelRoles\Contracts\RoleHasRelations as RoleHasRelationsContract;
+use axioTake\LaravelRoles\Traits\RoleHasRelations;
+use axioTake\LaravelRoles\Traits\Slugable;
 
 class Role extends Model implements RoleHasRelationsContract
 {
@@ -16,7 +16,7 @@ class Role extends Model implements RoleHasRelationsContract
      *
      * @var array
      */
-    protected $fillable = ['name', 'slug', 'description', 'level'];
+    protected $fillable = ['name', 'description', 'level'];
 
     /**
      * Create a new model instance.
