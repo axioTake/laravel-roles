@@ -41,7 +41,21 @@ This package is very easy to set up. There are only couple of steps.
 
 Pull this package in through Composer
 ```
-composer require axioTake/laravel-roles
+Insert following lines within your composer.json file:
+
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/axioTake/laravel-roles"
+        }
+    ],
+    "require": {
+        "axioTake/laravel-roles": "dev-master",
+    },
+
+Afterwards call:
+
+    composer update
 ```
 
 ### Service Provider
