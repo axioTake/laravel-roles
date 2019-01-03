@@ -110,7 +110,7 @@ trait HasRoleAndPermission
     public function checkRole($role)
     {
         return $this->getRoles()->contains(function ($value) use ($role) {
-            return $role == $value->id || Str::is($role, $value->name);
+            return $role === $value->id || Str::is($role, $value->name);
         });
     }
 
@@ -282,7 +282,7 @@ trait HasRoleAndPermission
     public function checkPermission($permission)
     {
         return $this->getPermissions()->contains(function ($value) use ($permission) {
-            return $permission == $value->id || Str::is($permission, $value->name);
+            return $permission === $value->id || Str::is($permission, $value->name);
         });
     }
 
@@ -301,7 +301,7 @@ trait HasRoleAndPermission
             return $this->pretend('allowed');
         }
 
-        if ($owner === true && $entity->{$ownerColumn} == $this->id) {
+        if ($owner === true && $entity->{$ownerColumn} === $this->id) {
             return true;
         }
 
@@ -318,8 +318,8 @@ trait HasRoleAndPermission
     protected function isAllowed($providedPermission, Model $entity)
     {
         foreach ($this->getPermissions() as $permission) {
-            if ($permission->model != '' && get_class($entity) == $permission->model
-                && ($permission->id == $providedPermission || $permission->name === $providedPermission)
+            if ($permission->model !== '' && get_class($entity) === $permission->model
+                && ($permission->id === $providedPermission || $permission->name === $providedPermission)
             ) {
                 return true;
             }
@@ -432,7 +432,6 @@ trait HasRoleAndPermission
                     (isset($parameters[1])) ? $parameters[1] : true, 
                     (isset($parameters[2])) ? $parameters[2] : 'user_id');
         }
-
         return parent::__call($method, $parameters);
     }
 
