@@ -97,7 +97,6 @@ trait HasRoleAndPermission
                 return false;
             }
         }
-
         return true;
     }
 
@@ -318,7 +317,7 @@ trait HasRoleAndPermission
     protected function isAllowed($providedPermission, Model $entity)
     {
         foreach ($this->getPermissions() as $permission) {
-            if ($permission->model !== '' && get_class($entity) === $permission->model
+            if ($permission->model != '' && get_class($entity) === $permission->model
                 && ($permission->id === $providedPermission || $permission->name === $providedPermission)
             ) {
                 return true;
@@ -388,7 +387,7 @@ trait HasRoleAndPermission
      */
     private function isPretendEnabled()
     {
-        return (bool) config('roles.pretend.enabled');
+        return (bool) config('roles.pretend.enabled', false);
     }
 
     /**
@@ -415,23 +414,25 @@ trait HasRoleAndPermission
 
     public function callMagic($method, $parameters)
     {
+        $separator = config('roles.separator', '.');
         if (starts_with($method, 'is')) {
-            return $this->hasRole(snake_case(substr($method, 2), config('roles.separator')));
+            return $this->hasRole(snake_case(substr($method, 2), $separator));
         } elseif (starts_with($method, 'can')) {
-            return $this->hasPermission(snake_case(substr($method, 3), config('roles.separator')));
+            return $this->hasPermission(snake_case(substr($method, 3), $separator));
         } elseif (starts_with($method, 'allowed')) {
-            $perm = snake_case(substr($method, 7), config('roles.separator'));
+            $perm = snake_case(substr($method, 7), $separator);
             if (config(roles.resourceFirstOrder)) {
                 // reverse string parts in order to match permission
-                $items = explode(config('roles.separator'), $perm);
+                $items = explode($separator, $perm);
                 if (count($items) > 1) {
-                    $perm = implode(config('roles.separator'), array_reverse($items));
+                    $perm = implode($separator, array_reverse($items));
                 }
             }
             return $this->allowed($perm, $parameters[0], 
                     (isset($parameters[1])) ? $parameters[1] : true, 
                     (isset($parameters[2])) ? $parameters[2] : 'user_id');
         }
+
         return parent::__call($method, $parameters);
     }
 
