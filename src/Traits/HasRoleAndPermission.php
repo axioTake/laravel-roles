@@ -415,12 +415,12 @@ trait HasRoleAndPermission
     public function callMagic($method, $parameters)
     {
         $separator = config('roles.separator', '.');
-        if (starts_with($method, 'is')) {
-            return $this->hasRole(snake_case(substr($method, 2), $separator));
-        } elseif (starts_with($method, 'can')) {
-            return $this->hasPermission(snake_case(substr($method, 3), $separator));
-        } elseif (starts_with($method, 'allowed')) {
-            $perm = snake_case(substr($method, 7), $separator);
+        if (Str::startsWith($method, 'is')) {
+            return $this->hasRole(Str::snake(substr($method, 2), $separator));
+        } elseif (Str::startsWith($method, 'can')) {
+            return $this->hasPermission(Str::snake(substr($method, 3), $separator));
+        } elseif (Str::startsWith($method, 'allowed')) {
+            $perm = Str::snake(substr($method, 7), $separator);
             if (config(roles.resourceFirstOrder)) {
                 // reverse string parts in order to match permission
                 $items = explode($separator, $perm);
